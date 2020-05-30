@@ -58,9 +58,17 @@ rmse(testset$pred_opt, testset$price_pw)
 
 #### Variable Importance ####
 
-# Gives the variable importance in a graph
-summary(gbm_rs,n.trees=best_iter, ylab = "Variable", main = "Variable Relative Importance")
+# Gives the variable importance in a graph & Table
+gbm_importance <- summary(gbm_rs,n.trees=best_iter, ylab = "Variable", main = "Variable Relative Importance")
 
-# OR just as a table
-summary(gbm_rs)
+gbm_importance
 
+# Put the table into nicer ggplot
+p <- ggplot(data= gbm_importance,
+            aes(x=reorder(var, -rel.inf),y=rel.inf)) +
+  geom_bar(stat = 'identity', position="stack", fill='lightblue')+
+  labs(x="Variable", y="Relative Importance")+
+  theme(axis.text.x=element_text(angle=45, hjust=1), plot.margin=unit(c(1,1,1,1),"cm"))
+p <- p + geom_text(aes(label = round(rel.inf,2)), vjust=-1)
+p <- p +  ylim(0,100)
+p
