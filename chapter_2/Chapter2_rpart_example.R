@@ -48,7 +48,7 @@ nrow(default_data)
 simple_model <- rpart(default~.,data = trainset, method="class")
 
 # Use prp() from rpart.plot to visualise the tree
-prp(simple_model)
+prp(simple_model, digits=-1)
 
 # Predict the target variable for the test set
 rpart_predict <- predict(simple_model,testset[,-1],type="class")
